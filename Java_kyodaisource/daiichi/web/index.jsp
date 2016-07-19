@@ -12,10 +12,7 @@
     <a href="insert">新規登録</a><br>
     <a href="" >検索(修正・削除)</a><br>
 </body>
-<%
-    // 課題7　セッションクリア
-    HttpSession hs = request.getSession();
-    hs.invalidate();
-%>
-
 </html>
+
+
+

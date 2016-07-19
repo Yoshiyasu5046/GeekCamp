@@ -30,17 +30,11 @@ public class InsertResult extends HttpServlet {
             throws ServletException, IOException {
         
         try{
+            request.setCharacterEncoding("UTF-8");//セッションに格納する文字コードをUTF-8に変更
+
 //          課題2　直リンクされているかどうかを判定
             HttpSession session = request.getSession();
-            request.setCharacterEncoding("UTF-8");//セッションに格納する文字コードをUTF-8に変更
-            
-            // helpクラスから以下のメソッドを使用したがエラーが多数表示された。以下の動きをリファクトするにはどうすればいいか？
-//            boolean shingi = true;
-//            public void AccessChecker(request, session, shingi);
-//            if (shingi == false) {
-//                throw new Exception("不正なアクセスです");
-//            }
-            
+                        
             // セッションの乱数とパラメーターの乱数を比較
             String accesschk = request.getParameter("ac");
             if(accesschk == null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
@@ -56,21 +50,24 @@ public class InsertResult extends HttpServlet {
             
             // UserDataBeansからuserDataへ中身を移行
             userdata.setName(udb.getName());
-            userdata.setType(Integer.parseInt(udb.getType()));
+            userdata.setType(udb.getType());
             userdata.setTell(udb.getTell());
             userdata.setComment(udb.getComment());
             
             // 課題6　誕生日のデータ変換
             Calendar bd = Calendar.getInstance();
-            bd.set(Calendar.YEAR, Integer.parseInt(udb.getYear()));
-            bd.set(Calendar.MONTH, Integer.parseInt(udb.getMonth()));
-            bd.set(Calendar.DAY_OF_MONTH, Integer.parseInt(udb.getDay()));
+            bd.set(Calendar.YEAR, udb.getYear());
+            bd.set(Calendar.MONTH, udb.getMonth()-1);
+            bd.set(Calendar.DAY_OF_MONTH, udb.getDay());
             userdata.setBirthday(bd.getTime()); // 誕生日のデータをUserDataBeansからuserDataへ中身を移行
     
             //DBへデータの挿入
             UserDataDAO.getInstance().insert(userdata);
             
+            //結果画面での表示用に入力パラメータ―をリクエストパラメータとして保持
+            request.setAttribute("udb", udb);
             request.getRequestDispatcher("/insertresult.jsp").forward(request, response);
+            
         }catch(Exception e){
             //データ挿入に失敗したらエラーページにエラー文を渡して表示
             request.setAttribute("error", e.getMessage());

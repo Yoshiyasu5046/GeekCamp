@@ -1,12 +1,17 @@
-<%@page import="javax.servlet.http.HttpSession" %>
-<%@page import="jums.JumsHelper" %>
-<%@page import="jums.UserDataBeans"%>
-
+<%@page import="javax.servlet.http.HttpSession"
+        import="jums.JumsHelper"
+        import="jums.UserDataBeans" %>
 <%
+    JumsHelper jh = JumsHelper.getInstance();
     HttpSession hs = request.getSession();
-    UserDataBeans udb = (UserDataBeans) hs.getAttribute("udb");
+    UserDataBeans udb = null;
+    boolean reinput = false;
+    if(request.getParameter("mode") != null && request.getParameter("mode").equals("REINPUT")){
+        reinput = true;
+        udb = (UserDataBeans)hs.getAttribute("udb");
+    }
+    
 %>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,74 +22,56 @@
     <body>
     <form action="insertconfirm" method="POST">
         名前:
-        <input 
-            type="text" 
-            name="name" 
-            required 
-            value="<%try {if (udb.getName() != null) {out.print(udb.getName());}} catch (NullPointerException e) {}%>">
+        <input type="text" name="name" required value="<% if(reinput){out.print(udb.getName());}%>">
         <br><br>
 
         生年月日:　
-        <%
-            int yearI;
-            int monthI;
-            int dayI;
-        %>
-        <select name="year">
+        <select name="year" required>
             <option value="">----</option>
-            <%
-            for(yearI=1950; yearI<=2010; yearI++){ %>
-            <option value="<%=yearI%>" <%try{if(udb.getYear().equals(String.valueOf(yearI))){out.print("selected");}}catch(NullPointerException e){}%>><%=yearI%> </option>
+            <% for(int i=1950; i<=2010; i++){ %>
+            <option value="<%=i%>" <% if(reinput && udb.getYear() == i){out.print("selected");}%>><%=i%></option>
             <% } %>
         </select>年
-        <select name="month">
+        <select name="month" required>
             <option value="">--</option>
-            <%
-            for(monthI = 1; monthI<=12; monthI++){ %>
-            <option value="<%=monthI%>" <%try{if(udb.getMonth().equals(String.valueOf(monthI))){out.print("selected");}}catch(NullPointerException e){}%>><%=monthI%></option>
+            <% for(int i = 1; i<=12; i++){ %>
+            <option value="<%=i%>" <% if(reinput && udb.getMonth() == i){out.print("selected");}%>><%=i%></option>
             <% } %>
         </select>月
-        <!--31日がない月に31日が登録できないように処理-->
-        <select name="day">
+        <select name="day" required>
             <option value="">--</option>
-            <%
-            for(dayI = 1; dayI<=31; dayI++){ %>
-            <option value="<%=dayI%>" <%try{if(udb.getDay().equals(String.valueOf(dayI))){out.print("selected");}}catch(NullPointerException e){}%>><%=dayI%></option>
+            <% for(int i = 1; i<=31; i++){ %>
+            <option value="<%=i%>"<% if(reinput && udb.getDay() == i){out.print("selected");}%>><%=i%></option>
             <% } %>
         </select>日
         <br><br>
 
         種別:
         <br>
-        <input type="radio" name="type" value="1" required <%try{if(udb.getType().equals("1")){out.print("checked");}}catch(NullPointerException e){}%>>エンジニア<br>
-        <input type="radio" name="type" value="2" required <%try{if(udb.getType().equals("2")){out.print("checked");}}catch(NullPointerException e){}%>>営業<br>
-        <input type="radio" name="type" value="3" required <%try{if(udb.getType().equals("3")){out.print("checked");}}catch(NullPointerException e){}%>>その他<br>
+            <% for(int i = 1; i<=3; i++){ %>
+            <input type="radio" name="type" required value="<%=i%>"<%if(reinput && udb.getType() == i){out.print("checked");}%>><%=jh.typeConfirm(i)%><br>
+            <% } %>
         <br>
 
         電話番号:
         <input 
-            required
             type="text" 
             name="tell" 
-            pattern="\d{3}-\d{3,4}-\d{4}" 
-            title="電話番号は、半角で市外局番からハイフン（-）を入れて記入してください。" 
-            maxlength="13" 
-            value="<%try {if (udb.getTell() != null) {out.print(udb.getTell());}}catch(NullPointerException e) {}%>"
+            required
+            pattern = "\d{2,3}-\d{3,4}-\d{4}"
+            title = "半角数字を用いてハイフンを含んだ電話番号を記入してください。"
+            value="<% if(reinput){out.print(udb.getTell());}%>"
         >
         <br><br>
 
         自己紹介文
         <br>
-        <textarea name="comment" rows=10 cols=50 style="resize:none" wrap="hard" required>
-            <%try {if (udb.getComment() != null) {out.print(udb.getComment());}} catch (NullPointerException e) {}%>
-        </textarea>
-        <br><br>
+        <textarea name="comment" rows=10 cols=50 style="resize:none" wrap="hard" required><% if(reinput){out.print(udb.getComment());}%></textarea><br><br>
         
-<!--        直リンク防止のために、乱数をフォームで送信-->
         <input type="hidden" name="ac"  value="<%= hs.getAttribute("ac")%>">
         <input type="submit" name="btnSubmit" value="確認画面へ">
     </form>
         <br>
-        <%=JumsHelper.getInstance().home()%>
+        <%=jh.home()%>
     </body>
 </html>

@@ -3,25 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model;
+package jums;
 
-import javax.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import model.Fruit;
+import javax.servlet.http.HttpSession;
+import jums.JumsHelper;
 
 /**
  *
  * @author yoshiyasukitahara
  */
-@WebServlet(name = "Fruit_controler", urlPatterns = {"/Fruit_controler"})
-public class Fruit_controler extends HttpServlet {
+public class Update extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,10 +32,36 @@ public class Fruit_controler extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        Fruit f = new Fruit("いちご", 700);
-        request.setAttribute("fruit", f);
-        RequestDispatcher d = request.getRequestDispatcher("/show.jsp");
-        d.forward(request, response);
+        PrintWriter out = response.getWriter();
+        try {
+                HttpSession session = request.getSession();
+                request.setCharacterEncoding("UTF-8");//セッションに格納する文字コードをUTF-8に変更
+                
+                //アクセスルートチェック
+                String accesschk = request.getParameter("ac");
+                if(accesschk ==null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
+                    throw new Exception("不正なアクセスです");
+                }
+                
+                //DTOオブジェクトにマッピング。DB専用のパラメータに変換
+                UserDataBeans udb = new UserDataBeans();
+                UserDataDTO previousData = (UserDataDTO)session.getAttribute("resultData");
+                udb.DTO2UDBeansMapping(previousData);
+                session.setAttribute("udb", udb);
+
+                // 詳細情報ページへのURLをセッションに保存。
+                String url = request.getHeader("REFERER");
+                session.setAttribute("to_resultDetail", url);
+                
+                request.getRequestDispatcher("/update.jsp").forward(request, response);
+                
+        } catch(Exception e){
+                //何らかの理由で失敗したらエラーページにエラー文を渡して表示。想定は不正なアクセスとDBエラー
+                request.setAttribute("error", e.getMessage());
+                request.getRequestDispatcher("/error.jsp").forward(request, response);
+        }finally {
+                out.close();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

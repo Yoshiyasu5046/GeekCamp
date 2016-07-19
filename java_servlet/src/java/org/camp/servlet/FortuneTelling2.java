@@ -56,6 +56,10 @@ public class FortuneTelling2 extends HttpServlet {
         rd.forward(request, response);
       
     }
+    
+    String myName() {
+        return "北原";
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

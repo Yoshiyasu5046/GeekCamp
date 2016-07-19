@@ -1,12 +1,12 @@
 <%-- 
     Document   : show
     Created on : Jul 6, 2016, 5:51:01 PM
-    Author     : yoshiyasukitahara
+    Autho　　r     : yoshiyasukitahara
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import = "model.Fruit" %>
-<% Fruit f = (Fruit) request.getAttribute("f"); %>
+<%@page import = "bean.Fruit" %>
+<% Fruit f = (Fruit) request.getAttribute("fruit"); %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +15,6 @@
     </head>
     <body>
         <h1>Fruits!</h1>
-        <p><%= f.getName() %>の値段は<%= f.getPrice() %>円です。</p>
+        <p><%= f.getName() %>の値段は<%= (Fruit) request.getAttribute("fruit") %>円です。</p>
     </body>
 </html>

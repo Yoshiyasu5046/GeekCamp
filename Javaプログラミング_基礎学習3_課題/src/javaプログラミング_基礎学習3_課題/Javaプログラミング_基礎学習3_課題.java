@@ -18,29 +18,40 @@ public class Javaプログラミング_基礎学習3_課題 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        introduceOneself(); // 課題1のメソッド（introduceOneself）の実行
-        System.out.println(even_or_odd(10)); //  課題2のメソッド（奇数か偶数か）の実行
-        squared_or_unSquared(4.0, 5.0, true); //課題3のメソッドの実行
-        // 課題5の実行
-        ArrayList output1 = profile_info(12, "Tom", 1987, 12, 30, "California"); //課題5のメソッドの実行
-        output_profile(output1);
-        //　課題6の実行
-        ArrayList output2 = validId_profile(10);
-        output_profile(output2);
+        String s = "http://localhost:8084/JavaUserManagementSystem_ver2.0/";
+        System.out.println(s.length());
+        // 課題1のメソッド（introduceOneself）の実行
+        // introduceOneself(); 
         
-        // 課題7の実行
-        output_profile_with_null();
-        //　課題8の実行
-        output_two_profile();
-        
+//        // 課題2のメソッド（奇数か偶数か）の実行
+//        System.out.println(even_or_odd(10)); 
+//        
+//        // 課題3のメソッドの実行
+//        squared_or_unSquared(4.0, 5.0, true); 
+//        
+//        // 課題5の実行
+//        ArrayList output1 = profile_info(12, "Tom", 1987, 12, 30, "California"); //課題5のメソッドの実行
+//        output_profile(output1);
+//        
+//        //　課題6の実行
+//        ArrayList output2 = validId_profile(10);
+//        output_profile(output2);
+//        
+//        // 課題7の実行
+//        output_profile_with_null();
+//        
+//        //　課題8の実行
+//        output_two_profile();  
     }
+    
     // 課題1 自分のプロフィール
     public static void introduceOneself() {
         String name = "北原";
         int age = 24;
         double height = 175.8;
         char gender = '男';
-        for (int i = 0; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) {
+            System.out.println( i  + "回目です。");
             System.out.println("私は" + name + "です。");
             System.out.println("年齢は" + age + "です。");
             System.out.println("身長は" + height + "です。");
