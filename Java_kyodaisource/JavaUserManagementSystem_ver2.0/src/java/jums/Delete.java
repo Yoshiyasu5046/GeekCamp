@@ -36,6 +36,7 @@ public class Delete extends HttpServlet {
                 throw new Exception("不正なアクセスです");
             }
             
+            // 消したいデータをudb型に変換し、セッションに保存。
             UserDataBeans udb = new UserDataBeans();
             UserDataDTO deleteData = (UserDataDTO) hs.getAttribute("resultData");
             udb.DTO2UDB_BD_ND_Mapping(deleteData);

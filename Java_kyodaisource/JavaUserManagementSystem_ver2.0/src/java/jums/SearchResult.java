@@ -32,7 +32,8 @@ public class SearchResult extends HttpServlet {
             throws ServletException, IOException {
         try{
             request.setCharacterEncoding("UTF-8");//リクエストパラメータの文字コードをUTF-8に変更
-            // 
+            
+            //　メソッド化する。 
             HttpSession session = request.getSession();
             String accesschk = request.getParameter("ac");
             if(accesschk == null || (Integer)session.getAttribute("ac")!=Integer.parseInt(accesschk)){
@@ -49,6 +50,7 @@ public class SearchResult extends HttpServlet {
             UserDataDTO searchData = new UserDataDTO();
             udb.UD2DTOMapping(searchData);
 
+            // DTOメソッドを用いて、
             ArrayList<UserDataDTO> resultData = UserDataDAO.getInstance().search(searchData);
             request.setAttribute("resultData", resultData);
             

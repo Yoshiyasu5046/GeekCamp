@@ -55,7 +55,7 @@
 
         電話番号:
         <input 
-            type="text" 
+            type="tel" 
             name="tell" 
             required
             pattern = "\d{2,4}-\d{3,4}-\d{4}"

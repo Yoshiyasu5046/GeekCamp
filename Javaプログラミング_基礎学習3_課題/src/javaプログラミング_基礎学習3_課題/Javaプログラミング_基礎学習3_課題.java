@@ -11,6 +11,7 @@ package javaプログラミング_基礎学習3_課題;
  */
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Javaプログラミング_基礎学習3_課題 {
 
@@ -18,7 +19,18 @@ public class Javaプログラミング_基礎学習3_課題 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String s = "http://localhost:8084/JavaUserManagementSystem_ver2.0/";
+//          HashMap<String, String> map = new HashMap<>(); 
+//          map.put("apple", "りんご");
+//          map.put("orange", "みかん");
+//          map.put("peach", "もも");
+//          map.put("banana", "バナナ");
+//          map.put("melon", "メロン");
+//          
+//          System.out.println(map.keySet());
+//          Object keys = map.keySet();
+          
+
+        String s = "http://localhost:8084/Kagoyume/";
         System.out.println(s.length());
         // 課題1のメソッド（introduceOneself）の実行
         // introduceOneself(); 
